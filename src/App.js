@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import todoListReducer from "./store/todoListReducer";
-import { addTaskToTodoList, editTodoTask } from "./store/todoAction";
+import { addTaskToTodoList, editTodoTask, removeTodoTask } from "./store/todoAction";
 import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Item } from './components/Item';
@@ -14,6 +14,10 @@ function App() {
 
     const addTask = (task) => {
         dispatch(addTaskToTodoList(task));
+    }
+
+    const removeTask = (id) => {
+        dispatch(removeTodoTask(id));
     }
 
     return (
@@ -34,7 +38,7 @@ function App() {
                 {
                     todoList.length ?
                         todoList.map(task => (
-                            <Item key={task.id} {...task} editTask={editTask} />
+                            <Item key={task.id} {...task} editTask={editTask} removeTask={removeTask} />
                         ))
                         : <p>Ваш список задач пуст</p>
                 }

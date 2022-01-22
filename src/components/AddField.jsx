@@ -6,9 +6,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export const AddField = ({ addTask }) => {
     let [text, setText] = useState('');
+    let [completed, setCompleted] = useState(false);
 
     const handleChange = (e) => {
         setText(e.target.value);
+    }
+
+	const onChangeCheckbox = (e) => {
+        setCompleted(e.target.checked);
     }
 
     const handleKeyDown = (e) => {
@@ -25,10 +30,11 @@ export const AddField = ({ addTask }) => {
         const newTodoTask = {
             id: Date.now(),
             text,
-            completed: false
+            completed
         };
         
         setText('');
+		setCompleted(false);
         addTask(newTodoTask);
     }
 
@@ -38,6 +44,8 @@ export const AddField = ({ addTask }) => {
                 className="checkbox"
                 icon={<RadioButtonUncheckedIcon />}
                 checkedIcon={<CheckCircleIcon />}
+				checked={completed}
+				onChange={onChangeCheckbox}
             />
             <TextField placeholder="Введите текст задачи..."
                        variant="standard"
