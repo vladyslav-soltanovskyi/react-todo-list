@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from "react";
+import todoListReducer from "./store/todoListReducer";
+import { addTaskToTodoList, editTodoTask } from "./store/todoAction";
+import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
+import { AddField } from './components/AddField';
+import { Item } from './components/Item';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    let [todoList, dispatch] = useReducer(todoListReducer, [])
+
+    const editTask = (id, data) => {
+        dispatch(editTodoTask(id, data));
+    }
+
+    const addTask = (task) => {
+        dispatch(addTaskToTodoList(task));
+    }
+
+    return (
+        <div className="App">
+            <Paper className="wrapper">
+                <Paper className="header" elevation={0}>
+                    <h4>Список задач</h4>
+                </Paper>
+                <AddField addTask={addTask} />
+                <Divider />
+                <Tabs value={0}>
+                    <Tab label="Все" />
+                    <Tab label="Активные" />
+                    <Tab label="Завершённые" />
+                </Tabs>
+                <Divider />
+                <List>
+                {
+                    todoList.length ?
+                        todoList.map(task => (
+                            <Item key={task.id} {...task} editTask={editTask} />
+                        ))
+                        : <p>Ваш список задач пуст</p>
+                }
+                </List>
+                <Divider />
+                <div className="check-buttons">
+                    <Button>Отметить всё</Button>
+                    <Button>Очистить</Button>
+                </div>
+            </Paper>
+        </div>
+    );
 }
 
 export default App;
