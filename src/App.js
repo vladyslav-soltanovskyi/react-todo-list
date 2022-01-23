@@ -1,12 +1,14 @@
 import { useReducer } from "react";
 import todoListReducer from "./store/todoListReducer";
-import { addTaskToTodoList, editTodoTask, removeTodoTask } from "./store/todoAction";
+import { addTaskToTodoList, editTodoTask, removeTodoTask, setCheckedTodoTasks, clearTodoList } from "./store/todoAction";
 import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Item } from './components/Item';
 
 function App() {
-    let [todoList, dispatch] = useReducer(todoListReducer, [])
+    const [todoList, dispatch] = useReducer(todoListReducer, []);
+    
+    let isAllTasksCompleted = todoList.every(task => task.completed);
 
     const editTask = (id, data) => {
         dispatch(editTodoTask(id, data));
@@ -18,6 +20,14 @@ function App() {
 
     const removeTask = (id) => {
         dispatch(removeTodoTask(id));
+    }
+
+    const setChekedTasks = (checked) => {
+        dispatch(setCheckedTodoTasks(checked));
+    }
+
+    const clearTodoTasks = () => {
+        dispatch(clearTodoList());
     }
 
     return (
@@ -45,8 +55,12 @@ function App() {
                 </List>
                 <Divider />
                 <div className="check-buttons">
-                    <Button>Отметить всё</Button>
-                    <Button>Очистить</Button>
+                    {
+                        isAllTasksCompleted ?
+                        <Button onClick={() => setChekedTasks(false)}>Снять отметки</Button>
+                        : <Button onClick={() => setChekedTasks(true)}>Отметить всё</Button>
+                    }
+                    <Button onClick={() => clearTodoTasks()}>Очистить</Button>
                 </div>
             </Paper>
         </div>

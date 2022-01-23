@@ -18,6 +18,14 @@ function todoListReducer(state, action) {
             const changedTodoList = state.filter(task => task.id !== action.payload);
             return changedTodoList;
         }
+        
+        case "SET_CHECKED_TASKS": {
+            return state.map(task => ({ ...task, completed: action.payload }) );
+        }
+
+        case "CLEAR_TODO_LIST": {
+            return [];
+        }
 
         default:
             return state;

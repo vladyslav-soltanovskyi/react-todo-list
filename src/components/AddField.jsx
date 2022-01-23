@@ -5,8 +5,8 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export const AddField = ({ addTask }) => {
-    let [text, setText] = useState('');
-    let [completed, setCompleted] = useState(false);
+    const [text, setText] = useState('');
+    const [completed, setCompleted] = useState(false);
 
     const handleChange = (e) => {
         setText(e.target.value);
