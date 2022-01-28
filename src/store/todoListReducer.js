@@ -2,29 +2,49 @@ function todoListReducer(state, action) {
     switch(action.type) {
 
         case "ADD_TASK": {
-            return [
+            return {
                 ...state,
-                action.payload
-            ];
+                todoList: [
+                    ...state.todoList,
+                    action.payload
+                ]
+            };
         }
         
         case "EDIT_TASK": {
             const { id, data } = action.payload;
-            const changedTodoList = [...state].map(task => task.id === id ? { ...task, ...data } : task);
-            return changedTodoList;
+            return {
+                ...state,
+                todoList: state.todoList.map(task => task.id === id ? { ...task, ...data } : task)
+            };
         }
 
         case "REMOVE_TASK": {
-            const changedTodoList = state.filter(task => task.id !== action.payload);
-            return changedTodoList;
+            return {
+                ...state,
+                todoList: state.todoList.filter(task => task.id !== action.payload)
+            };
         }
         
         case "SET_CHECKED_TASKS": {
-            return state.map(task => ({ ...task, completed: action.payload }) );
+            return {
+                ...state,
+                todoList: state.todoList.map(task => ({ ...task, completed: action.payload }) )
+            }
         }
 
         case "CLEAR_TODO_LIST": {
-            return [];
+            return {
+                ...state,
+                todoList: []
+            };
+        }
+
+        case "SET_TYPE": {
+            return {
+                ...state,
+                orderBy: action.payload
+            }
         }
 
         default:
