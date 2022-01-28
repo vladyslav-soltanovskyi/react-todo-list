@@ -16,7 +16,6 @@ export const removeTodoTask = (id) => ({
     payload: id,
 });
 
-
 export const setCheckedTodoTasks= (checked) => ({
     type: "SET_CHECKED_TASKS",
     payload: checked
@@ -24,4 +23,9 @@ export const setCheckedTodoTasks= (checked) => ({
 
 export const clearTodoList = () => ({
     type: "CLEAR_TODO_LIST"
+});
+
+export const setType = (type) => ({
+    type: "SET_TYPE",
+    payload: type
 });
