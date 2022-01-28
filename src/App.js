@@ -1,23 +1,23 @@
-import { useReducer } from "react";
-import todoListReducer from "./store/todoListReducer";
-import { addTaskToTodoList, editTodoTask, removeTodoTask, setCheckedTodoTasks, clearTodoList, setType } from "./store/todoAction";
-import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodoTask, editTodoTask, removeTodoTask, setCheckedTasks, clearTodoList } from "./store/actions/tasks";
+import { Paper, Divider, Button, List } from '@mui/material';
 import { AddField } from './components/AddField';
+import { Filter } from './components/Filter';
 import { Item } from './components/Item';
 
-const filters = ['all', 'active', 'сompleted'];
-
 function App() {
-    const [{ todoList, orderBy }, dispatch] = useReducer(todoListReducer, { orderBy: 'all', todoList: [] });
+    const dispatch = useDispatch();
+    const tasks = useSelector(({tasks}) => tasks);
+    const filterBy = useSelector(({filter}) => filter.filterBy);
     
-    let isAllTasksCompleted = todoList.every(task => task.completed);
+    let isAllTasksCompleted = tasks.every(task => task.completed);
 
     const editTask = (id, data) => {
         dispatch(editTodoTask(id, data));
     }
 
     const addTask = (task) => {
-        dispatch(addTaskToTodoList(task));
+        dispatch(addTodoTask(task));
     }
 
     const removeTask = (id) => {
@@ -25,15 +25,11 @@ function App() {
     }
 
     const setChekedTasks = (checked) => {
-        dispatch(setCheckedTodoTasks(checked));
+        dispatch(setCheckedTasks(checked));
     }
 
     const clearTodoTasks = () => {
         dispatch(clearTodoList());
-    }
-
-    const setTab = (_, newIndex) => {
-        dispatch(setType(filters[newIndex]));
     }
 
     return (
@@ -44,23 +40,19 @@ function App() {
                 </Paper>
                 <AddField addTask={addTask} />
                 <Divider />
-                <Tabs value={filters.indexOf(orderBy)} onChange={setTab}>
-                    <Tab label="Все" />
-                    <Tab label="Активные" />
-                    <Tab label="Завершённые" />
-                </Tabs>
+                <Filter />
                 <Divider />
                 <List>
                 {
-                    todoList.length ?
-                        todoList.filter(task =>{
-                                if (orderBy === 'active') {
+                    tasks.length ?
+                        tasks.filter(task =>{
+                                if (filterBy === 'active') {
                                     return !task.completed;
                                 }
-                                if (orderBy === 'сompleted') {
+                                if (filterBy === 'сompleted') {
                                     return task.completed;
                                 }
-                                return true; // orderBy -> all
+                                return true; // filterBy -> all
                             })
                             .map(task => (
                                 <Item key={task.id} {...task} editTask={editTask} removeTask={removeTask} />
