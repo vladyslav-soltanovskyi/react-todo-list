@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { addTodoTask, editTodoTask, removeTodoTask, setCheckedTasks, clearTodoList } from "./store/actions/tasks";
+import { addTodoTask, editTodoTask, removeTodoTask, setCheckedTasks, clearTodoList, fetchTasks } from "./store/actions/tasks";
 import { Paper, Divider, Button, List } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Filter } from './components/Filter';
@@ -11,6 +12,10 @@ function App() {
     const filterBy = useSelector(({filter}) => filter.filterBy);
     
     let isAllTasksCompleted = tasks.every(task => task.completed);
+
+    useEffect(() => {
+        dispatch(fetchTasks());
+    }, []);
 
     const editTask = (id, data) => {
         dispatch(editTodoTask(id, data));
