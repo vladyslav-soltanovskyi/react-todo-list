@@ -15,7 +15,7 @@ function App() {
 
     useEffect(() => {
         dispatch(fetchTasks());
-    }, [dispatch]);
+    }, [dispatch]);  
 
     const editTask = (id, data) => {
         dispatch(editTodoTask(id, data));
