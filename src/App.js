@@ -13,9 +13,10 @@ function App() {
     
     let isAllTasksCompleted = tasks.every(task => task.completed);
 
+    
     useEffect(() => {
         dispatch(fetchTasks());
-    }, [dispatch]);
+    }, [dispatch]);  
 
     const editTask = (id, data) => {
         dispatch(editTodoTask(id, data));
